@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+.env.*
+
+# Generated files
+generated_invoices/*
+generated_quotes/*
+!generated_invoices/.gitkeep
+!generated_quotes/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Lights | Quotes & Receipts</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #3960FA;
+            --primary-dark: #2747c7;
+            --secondary: #6c757d;
+            --danger: #dc3545;
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --hover: #eef4ff;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            --radius: 14px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #f7f9fc 0%, #eef3fb 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            height: 72px;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            box-shadow: 0 4px 18px rgba(57, 96, 250, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.2px;
+        }
+
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: #fff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .header-right {
+            font-size: 13px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .main {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+        }
+
+        aside {
+            width: 250px;
+            background: rgba(255,255,255,0.95);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            backdrop-filter: blur(8px);
+        }
+
+        .aside-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--muted);
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            padding: 0 10px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            color: var(--text);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: var(--hover);
+            color: var(--primary);
+            border-color: #dbe5ff;
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(57, 96, 250, 0.22);
+        }
+
+        .content {
+            flex: 1;
+            padding: 28px;
+            overflow-y: auto;
+        }
+
+        .card,
+        #quotesView,
+        #historyView {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(229, 231, 235, 0.9);
+        }
+
+        .card {
+            max-width: 1100px;
+            padding: 28px;
+        }
+
+        #quotesView,
+        #historyView {
+            padding: 28px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        h3 {
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .section-subtitle {
+            color: var(--muted);
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 18px 20px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 700;
+            margin-bottom: 7px;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px 13px;
+            font-size: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #fff;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(57, 96, 250, 0.12);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+            font-size: 14px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        thead th {
+            background: #f3f6fb;
+            color: #374151;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #eef0f3;
+            vertical-align: middle;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #fafbfc;
+        }
+
+        tbody tr:hover {
+            background: #edf4ff;
+        }
+
+        #itemsTable input {
+            padding: 10px 12px;
+            font-size: 13px;
+        }
+
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        .primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .secondary {
+            background: var(--secondary);
+            color: #fff;
+        }
+
+        .secondary:hover {
+            opacity: 0.92;
+        }
+
+        .danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .danger:hover {
+            opacity: 0.92;
+        }
+
+        .actions {
+            margin-top: 22px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filters {
+            display: flex;
+            align-items: end;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            padding: 14px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 170px;
+        }
+
+        .empty-state {
+            padding: 24px;
+            text-align: center;
+            color: var(--muted);
+            border: 1px dashed #cfd8e3;
+            border-radius: 12px;
+            background: #fbfcfe;
+            margin-top: 12px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #eaf0ff;
+            color: var(--primary);
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        #pdfModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 24px;
+        }
+
+        #pdfModal .modal-content {
+            background: #ffffff;
+            width: min(1100px, 100%);
+            height: 85vh;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+        }
+
+        #pdfFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            z-index: 2;
+            background: var(--danger);
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .main {
+                flex-direction: column;
+            }
+
+            aside {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 16px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 16px;
+            }
+
+            .card,
+            #quotesView,
+            #historyView {
+                padding: 18px;
+            }
+
+            header {
+                padding: 0 16px;
+            }
+
+            .header-right {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="app">
+    <header>
+        <div class="brand">
+            <div class="logo">CL</div>
+            City Lights Electrical
+        </div>
+        <div class="header-right">Quotes & Invoices Management</div>
+    </header>
+
+    <div class="main">
+        <aside>
+            <div class="aside-title">Navigation</div>
+            <div class="nav-link active" onclick="navigate('receipt', this)">Create Invoice</div>
+            <div class="nav-link" onclick="navigate('quote', this)">Create Quote</div>
+            <div class="nav-link" onclick="navigate('quotes', this)">Quotes</div>
+            <div class="nav-link" onclick="navigate('history', this)">History</div>
+        </aside>
+
+        <div class="content">
+
+            <div id="formView" class="card">
+                <div class="badge">Document Generator</div>
+                <h2 id="pageTitle"></h2>
+                <p class="section-subtitle">Fill in the client details and items below to generate your document.</p>
+
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label>Client Name</label>
+                        <input id="clientName" placeholder="Enter client name">
+                    </div>
+
+                    <div class="field-group">
+                        <label>Client Address</label>
+                        <input id="clientAddress" placeholder="Enter client address">
+                    </div>
+
+                    <!-- QUOTE ONLY -->
+                    <div id="quoteFields" class="full-width" style="display:none;">
+                        <div class="form-grid">
+                            <div class="field-group">
+                                <label>Client City</label>
+                                <input id="clientCity" placeholder="Enter client city">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INVOICE ONLY -->
+                    <div id="receiptFields" class="full-width">
+                        <div class="form-grid">
+                            <div class="field-group">
+                                <label>Client Number</label>
+                                <input id="clientNumber" placeholder="Enter client number">
+                            </div>
+
+                            <div class="field-group">
+                                <label>Items Tax Rate</label>
+                                <input id="clientRate" placeholder="Enter tax rate">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Items</h3>
+                <div class="table-wrap">
+                    <table id="itemsTable">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th style="width: 120px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="actions">
+                    <button class="secondary" onclick="addRow()">Add Item</button>
+
+                    <button class="primary" id="invoiceBtn" onclick="submitInvoice()">Generate Invoice</button>
+
+                    <button class="secondary" id="previewQuoteBtn" style="display:none;" onclick="previewQuote()">Preview Quote</button>
+
+                    <button class="primary" id="saveQuoteBtn" style="display:none;" onclick="saveQuote()">Save & Download Quote</button>
+                </div>
+            </div>
+
+            <div id="quotesView" style="display:none;">
+                <div class="badge">Quotes</div>
+                <h2>Stationery Quotes</h2>
+                <p class="section-subtitle">View all saved quote entries here.</p>
+                <div id="quotesList">
+                    <div class="empty-state">No quotes available yet.</div>
+                </div>
+            </div>
+
+            <div id="historyView" style="display:none;">
+                <div class="badge">History</div>
+                <h2>History</h2>
+                <p class="section-subtitle">Filter and search through previously generated quotes and invoices.</p>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Start Date</label>
+                        <input type="date" id="startDate">
+                    </div>
+                    <div class="filter-group">
+                        <label>End Date</label>
+                        <input type="date" id="endDate">
+                    </div>
+                    <button class="primary" onclick="fetchHistory()">Filter</button>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group" style="min-width: 280px;">
+                        <label>Search</label>
+                        <input type="text" id="searchInput" placeholder="Search client, quote id, invoice id...">
+                    </div>
+                    <button class="primary" onclick="searchHistory()">Search</button>
+                </div>
+
+                <h3>Quotes</h3>
+                <div class="table-wrap">
+                    <table id="historyQuotesTable">
+                        <thead>
+                            <tr>
+                                <th>Quote Number</th>
+                                <th>Client Name</th>
+                                <th>Address</th>
+                                <th>Date</th>
+                                <th>Quote</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <h3>Invoices</h3>
+                <div class="table-wrap">
+                    <table id="historyInvoicesTable">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Client Name</th>
+                                <th>Address</th>
+                                <th>Date</th>
+                                <th>Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pdfModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closePdf()">Close</button>
+        <iframe id="pdfFrame"></iframe>
+    </div>
+</div>
+
+<script>
+    const QUOTE_PREVIEW_API = "/quote/preview";
+    const QUOTE_SAVE_API = "/quote/finalize";
+    const INVOICE_API = "/receipt";
+
+    const MODES = {
+        receipt: { title: "Create Invoice" },
+        quote: { title: "Create Quote" }
+    };
+
+    let currentMode = "receipt";
+    let previewBlobUrl = null;
+
+    function navigate(mode, el) {
+        document.querySelectorAll(".nav-link").forEach(n => n.classList.remove("active"));
+        el.classList.add("active");
+
+        document.getElementById("formView").style.display = "none";
+        document.getElementById("quotesView").style.display = "none";
+        document.getElementById("historyView").style.display = "none";
+
+        if (mode === "quotes") {
+            document.getElementById("quotesView").style.display = "block";
+            return;
+        }
+
+        if (mode === "history") {
+            document.getElementById("historyView").style.display = "block";
+            fetchHistory();
+            return;
+        }
+
+        currentMode = mode;
+        document.getElementById("pageTitle").innerText = MODES[mode].title;
+        document.getElementById("formView").style.display = "block";
+
+        document.getElementById("quoteFields").style.display = mode === "quote" ? "block" : "none";
+        document.getElementById("receiptFields").style.display = mode === "receipt" ? "block" : "none";
+
+        document.getElementById("invoiceBtn").style.display = mode === "receipt" ? "inline-block" : "none";
+        document.getElementById("previewQuoteBtn").style.display = mode === "quote" ? "inline-block" : "none";
+        document.getElementById("saveQuoteBtn").style.display = mode === "quote" ? "inline-block" : "none";
+
+        resetForm();
+    }
+
+    function addRow(desc = "", qty = 1, price = 0) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td><input value="${desc}" placeholder="Item description"></td>
+            <td><input type="number" value="${qty}" min="1"></td>
+            <td><input type="number" value="${price}" step="0.01" min="0"></td>
+            <td><button class="danger" onclick="this.closest('tr').remove()">Remove</button></td>
+        `;
+        document.querySelector("#itemsTable tbody").appendChild(tr);
+    }
+
+    function resetForm() {
+        document.querySelector("#itemsTable tbody").innerHTML = "";
+        addRow();
+
+        document.getElementById("clientName").value = "";
+        document.getElementById("clientAddress").value = "";
+        document.getElementById("clientCity").value = "";
+        document.getElementById("clientNumber").value = "";
+        document.getElementById("clientRate").value = "";
+    }
+
+    function buildItems() {
+        const rows = document.querySelectorAll("#itemsTable tbody tr");
+        const items = {};
+
+        rows.forEach((row, index) => {
+            const inputs = row.querySelectorAll("input");
+            items[`item${index + 1}`] = {
+                description: inputs[0].value.trim(),
+                quantity: Number(inputs[1].value),
+                unit_price: Number(inputs[2].value)
+            };
+        });
+
+        return items;
+    }
+
+    function validateItems(items) {
+        const values = Object.values(items);
+
+        if (values.length === 0) {
+            alert("Please add at least one item.");
+            return false;
+        }
+
+        for (const item of values) {
+            if (!item.description) {
+                alert("Each item must have a description.");
+                return false;
+            }
+
+            if (!item.quantity || item.quantity <= 0) {
+                alert("Each item must have a valid quantity.");
+                return false;
+            }
+
+            if (Number.isNaN(item.unit_price) || item.unit_price < 0) {
+                alert("Each item must have a valid unit price.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function buildQuotePayload() {
+        const client_name = document.getElementById("clientName").value.trim();
+        const client_address = document.getElementById("clientAddress").value.trim();
+        const client_city = document.getElementById("clientCity").value.trim();
+        const items = buildItems();
+
+        if (!client_name) {
+            alert("Client name is required.");
+            return null;
+        }
+
+        if (!client_address) {
+            alert("Client address is required.");
+            return null;
+        }
+
+        if (!client_city) {
+            alert("Client city is required.");
+            return null;
+        }
+
+        if (!validateItems(items)) {
+            return null;
+        }
+
+        return {
+            client_name,
+            client_address,
+            client_city,
+            items
+        };
+    }
+
+    function buildInvoicePayload() {
+        const client_name = document.getElementById("clientName").value.trim();
+        const client_address = document.getElementById("clientAddress").value.trim();
+        const client_number = document.getElementById("clientNumber").value.trim();
+        const client_rate = document.getElementById("clientRate").value.trim();
+        const items = buildItems();
+
+        if (!client_name) {
+            alert("Client name is required.");
+            return null;
+        }
+
+        if (!client_address) {
+            alert("Client address is required.");
+            return null;
+        }
+
+        if (!client_number) {
+            alert("Client number is required.");
+            return null;
+        }
+
+        if (!client_rate) {
+            alert("Items tax rate is required.");
+            return null;
+        }
+
+        if (!validateItems(items)) {
+            return null;
+        }
+
+        return {
+            client_name,
+            client_address,
+            client_number,
+            client_rate: Number(client_rate),
+            items
+        };
+    }
+
+    async function previewQuote() {
+        const payload = buildQuotePayload();
+        if (!payload) return;
+
+        try {
+            const res = await fetch(QUOTE_PREVIEW_API, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                const err = await res.text();
+                alert("Preview error: " + err);
+                return;
+            }
+
+            const blob = await res.blob();
+            openPdfBlob(blob);
+        } catch (error) {
+            console.error(error);
+            alert("Preview request failed.");
+        }
+    }
+
+    async function saveQuote() {
+        const payload = buildQuotePayload();
+        if (!payload) return;
+
+        try {
+            const res = await fetch(QUOTE_SAVE_API, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                const err = await res.text();
+                alert("Save error: " + err);
+                return;
+            }
+
+            const blob = await res.blob();
+            downloadBlob(blob, "quote.pdf");
+        } catch (error) {
+            console.error(error);
+            alert("Save and download failed.");
+        }
+    }
+
+    async function submitInvoice() {
+        const payload = buildInvoicePayload();
+        if (!payload) return;
+
+        try {
+            const res = await fetch(INVOICE_API, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                const err = await res.text();
+                alert("Invoice error: " + err);
+                return;
+            }
+
+            const blob = await res.blob();
+            downloadBlob(blob, "invoice.xlsx");
+        } catch (error) {
+            console.error(error);
+            alert("Invoice request failed.");
+        }
+    }
+
+    function downloadBlob(blob, filename) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    function openPdfBlob(blob) {
+        if (previewBlobUrl) {
+            URL.revokeObjectURL(previewBlobUrl);
+        }
+
+        previewBlobUrl = URL.createObjectURL(blob);
+        const modal = document.getElementById("pdfModal");
+        const frame = document.getElementById("pdfFrame");
+
+        frame.src = previewBlobUrl;
+        modal.style.display = "flex";
+    }
+
+    function previewPdf(url) {
+        if (previewBlobUrl) {
+            URL.revokeObjectURL(previewBlobUrl);
+            previewBlobUrl = null;
+        }
+
+        const modal = document.getElementById("pdfModal");
+        const frame = document.getElementById("pdfFrame");
+
+        frame.src = url;
+        modal.style.display = "flex";
+    }
+
+    function closePdf() {
+        const modal = document.getElementById("pdfModal");
+        const frame = document.getElementById("pdfFrame");
+
+        frame.src = "";
+        modal.style.display = "none";
+
+        if (previewBlobUrl) {
+            URL.revokeObjectURL(previewBlobUrl);
+            previewBlobUrl = null;
+        }
+    }
+
+    async function fetchHistory() {
+        const start = document.getElementById("startDate").value;
+        const end = document.getElementById("endDate").value;
+
+        let quoteUrl = "/quote_db";
+        let invoiceUrl = "/invoice_db";
+
+        if (start && end) {
+            quoteUrl += `?start_date=${start}&end_date=${end}`;
+            invoiceUrl += `?start_date=${start}&end_date=${end}`;
+        }
+
+        try {
+            const [quotesRes, invoicesRes] = await Promise.all([
+                fetch(quoteUrl),
+                fetch(invoiceUrl)
+            ]);
+
+            if (!quotesRes.ok || !invoicesRes.ok) {
+                alert("Error fetching history");
+                return;
+            }
+
+            const quotes = await quotesRes.json();
+            const invoices = await invoicesRes.json();
+
+            renderQuotes(quotes);
+            renderInvoices(invoices);
+        } catch (error) {
+            console.error(error);
+            alert("Failed to load history");
+        }
+    }
+
+    function renderQuotes(quotes) {
+        const quotesBody = document.querySelector("#historyQuotesTable tbody");
+        quotesBody.innerHTML = "";
+
+        if (!quotes || quotes.length === 0) {
+            quotesBody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center; color:#6b7280;">No quotes found</td>
+                </tr>
+            `;
+            return;
+        }
+
+        quotes.forEach(q => {
+            const quoteNumberValue = q.client_quote_number || "-";
+            const pdfPath = q.client_quote_pdf || "";
+
+            quotesBody.innerHTML += `
+                <tr>
+                    <td>${quoteNumberValue}</td>
+                    <td>${q.client_name || "-"}</td>
+                    <td>${q.client_address || "-"}</td>
+                    <td>${q.client_date ? new Date(q.client_date).toLocaleDateString() : "-"}</td>
+                    <td>
+                        ${
+                            pdfPath
+                                ? `<button class="secondary" onclick="previewPdf('/pdf/quote/${pdfPath.split('/').pop()}')">Preview</button>`
+                                : `<span style="color:#6b7280;">No PDF</span>`
+                        }
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function renderInvoices(invoices) {
+        const invoicesBody = document.querySelector("#historyInvoicesTable tbody");
+        invoicesBody.innerHTML = "";
+
+        if (!invoices || invoices.length === 0) {
+            invoicesBody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center; color:#6b7280;">No invoices found</td>
+                </tr>
+            `;
+            return;
+        }
+
+        invoices.forEach(inv => {
+            const invoiceNumberValue = inv.client_number || "-";
+            const pdfPath = inv.client_invoice_pdf || "";
+
+            invoicesBody.innerHTML += `
+                <tr>
+                    <td>${invoiceNumberValue}</td>
+                    <td>${inv.client_name || "-"}</td>
+                    <td>${inv.client_address || "-"}</td>
+                    <td>${inv.client_date ? new Date(inv.client_date).toLocaleDateString() : "-"}</td>
+                    <td>
+                        ${
+                            pdfPath
+                                ? `<button class="secondary" onclick="previewPdf('/pdf/invoice/${pdfPath.split('/').pop()}')">Preview</button>`
+                                : `<span style="color:#6b7280;">No PDF</span>`
+                        }
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    async function searchHistory() {
+        const query = document.getElementById("searchInput").value.trim();
+
+        if (!query) {
+            fetchHistory();
+            return;
+        }
+
+        try {
+            const res = await fetch(`/search?search=${encodeURIComponent(query)}`);
+
+            if (!res.ok) {
+                alert("Search error");
+                return;
+            }
+
+            const data = await res.json();
+            renderQuotes(data.quotes || []);
+            renderInvoices(data.invoices || []);
+        } catch (error) {
+            console.error(error);
+            alert("Search failed");
+        }
+    }
+
+    document.getElementById("pageTitle").innerText = MODES.receipt.title;
+    resetForm();
+</script>
+</body>
+</html>
