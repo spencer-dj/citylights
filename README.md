@@ -2,6 +2,7 @@
 A lightweight internal application was developed for **City-Lights**, a small electrical services startup, to streamline the creation of **client quotes and invoices**.
 
 This system enables staff to quickly generate professional PDF documents, store them in a database, and retrieve past records through an easy-to-use web interface.
+The system is currently under active development, with additional features planned.
 
 ---
 
@@ -172,3 +173,4 @@ The system is still under active development. Planned improvements include:
 
 GitHub:
 https://github.com/spencer-dj
+
