@@ -64,9 +64,6 @@ citylights/
 ├── frontend/
 │   └── index.html
 │
-├── generated_quotes/        # Generated quote PDFs
-├── generated_invoices/      # Generated invoice PDFs
-│
 ├── migrations/
 ├── alembic/
 │
@@ -173,4 +170,5 @@ The system is still under active development. Planned improvements include:
 
 GitHub:
 https://github.com/spencer-dj
+
 
