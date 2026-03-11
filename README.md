@@ -53,7 +53,7 @@ citylights/
 │   ├── schemas.py           # Pydantic request schemas
 │
 │   ├── routes/
-│   │   └── routes.py        # API endpoints
+│   │   └── routes.py         # FastAPI routes for retrieving quotes, invoices, and serving generated PDFs
 │
 │   ├── services/            # Business logic
 │   │   ├── quote.py
@@ -170,5 +170,6 @@ The system is still under active development. Planned improvements include:
 
 GitHub:
 https://github.com/spencer-dj
+
 
 
