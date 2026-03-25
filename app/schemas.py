@@ -48,3 +48,17 @@ class ReceiptRequest(BaseModel):
     client_number: str
     client_rate: float
     items: Dict[str, ReceiptItem]
+
+class QuoteCustomerReuse(BaseModel):
+    client_name: Optional[str] = None
+    client_address: Optional[str] = None
+    class Config:
+        from_attributes = True
+
+class InvoiceCustomerReuse(BaseModel):
+    client_name: Optional[str] = None
+    client_address: Optional[str] = None
+    client_number: Optional[str] = None
+
+    class Config:
+        from_attributes = True

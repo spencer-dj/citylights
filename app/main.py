@@ -6,6 +6,7 @@ from app.services.invoice import router as invoice_router
 from app.database import engine, Base
 from app.routes.routes import router as routes_router
 from app.services.search import router as search_router
+from app.routes import customers
 
 Base.metadata.create_all(bind=engine)
 
@@ -26,3 +27,6 @@ app.include_router(qoute_router)
 app.include_router(invoice_router)
 app.include_router(routes_router)
 app.include_router(search_router)
+#app.include_router(quotes.router)
+#app.include_router(invoices.router)
+app.include_router(customers.router)

@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from fastapi.responses import FileResponse
 from typing import List
 from datetime import date, timedelta
-
 from app.database import get_db
 from app.models import Invoices, Quotes
 from app.schemas import InvoiceOut, QuoteOut

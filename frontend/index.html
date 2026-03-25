@@ -379,6 +379,83 @@
             border-radius: 8px;
         }
 
+        
+
+        .reuse-customer-section {
+            margin-bottom: 20px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+        .reuse-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .reuse-toggle input {
+            width: auto;
+            margin: 0;
+        }
+
+        .customer-picker.hidden {
+            display: none;
+        }
+
+        .customer-search-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .customer-list {
+            max-height: 220px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .customer-item {
+            padding: 12px;
+            border-bottom: 1px solid #eef0f3;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .customer-item:last-child {
+            border-bottom: none;
+        }
+
+        .customer-item:hover {
+            background: var(--hover);
+        }
+
+        .customer-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #111827;
+        }
+
+        .customer-meta {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .customer-empty {
+            padding: 12px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
         @media (max-width: 900px) {
             .main {
                 flex-direction: column;
@@ -441,6 +518,47 @@
                 <div class="badge">Document Generator</div>
                 <h2 id="pageTitle"></h2>
                 <p class="section-subtitle">Fill in the client details and items below to generate your document.</p>
+
+                
+                <div id="quoteReuseSection" class="reuse-customer-section" style="display:none;">
+                    <label class="reuse-toggle">
+                        <input type="checkbox" id="usePreviousQuoteCustomer">
+                        Use previous customer details
+                    </label>
+
+                    <div id="quoteCustomerPicker" class="customer-picker hidden">
+                        <input
+                            type="text"
+                            id="quoteCustomerSearch"
+                            placeholder="Search customer by name, address, or city"
+                            class="customer-search-input"
+                        >
+
+                        <div id="quoteCustomerList" class="customer-list">
+                            <div class="customer-empty">No customers loaded yet.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="invoiceReuseSection" class="reuse-customer-section" style="display:none;">
+                    <label class="reuse-toggle">
+                        <input type="checkbox" id="usePreviousInvoiceCustomer">
+                        Use previous customer details
+                    </label>
+
+                    <div id="invoiceCustomerPicker" class="customer-picker hidden">
+                        <input
+                            type="text"
+                            id="invoiceCustomerSearch"
+                            placeholder="Search customer by name, address, number, or tax rate"
+                            class="customer-search-input"
+                        >
+
+                        <div id="invoiceCustomerList" class="customer-list">
+                            <div class="customer-empty">No customers loaded yet.</div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-grid">
                     <div class="field-group">
@@ -586,6 +704,8 @@
     const QUOTE_PREVIEW_API = "/quote/preview";
     const QUOTE_SAVE_API = "/quote/finalize";
     const INVOICE_API = "/receipt";
+    const QUOTE_CUSTOMERS_API = "/customers/quotes";
+    const INVOICE_CUSTOMERS_API = "/customers/invoices";
 
     const MODES = {
         receipt: { title: "Create Invoice" },
@@ -595,7 +715,267 @@
     let currentMode = "receipt";
     let previewBlobUrl = null;
 
-    function navigate(mode, el) {
+    
+    let allQuoteCustomers = [];
+    let filteredQuoteCustomers = [];
+    let allInvoiceCustomers = [];
+    let filteredInvoiceCustomers = [];
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    async function loadQuoteCustomers() {
+        const quoteCustomerList = document.getElementById("quoteCustomerList");
+
+        try {
+            const response = await fetch(QUOTE_CUSTOMERS_API);
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch quote customers");
+            }
+
+            allQuoteCustomers = await response.json();
+            filteredQuoteCustomers = [...allQuoteCustomers];
+            renderQuoteCustomerList(filteredQuoteCustomers);
+        } catch (error) {
+            console.error("Error loading quote customers:", error);
+            quoteCustomerList.innerHTML = `
+                <div class="customer-empty">Failed to load previous customers.</div>
+            `;
+        }
+    }
+
+    function renderQuoteCustomerList(customers) {
+        const quoteCustomerList = document.getElementById("quoteCustomerList");
+
+        if (!customers.length) {
+            quoteCustomerList.innerHTML = `
+                <div class="customer-empty">No matching customers found.</div>
+            `;
+            return;
+        }
+
+        quoteCustomerList.innerHTML = customers.map((customer, index) => `
+            <div class="customer-item" data-index="${index}">
+                <div class="customer-name">${escapeHtml(customer.client_name)}</div>
+                <div class="customer-meta">
+                    ${escapeHtml(customer.client_address)}
+                    ${customer.client_city ? " • " + escapeHtml(customer.client_city) : ""}
+                </div>
+            </div>
+        `).join("");
+
+        document.querySelectorAll("#quoteCustomerList .customer-item").forEach(item => {
+            item.addEventListener("click", function () {
+                const index = Number(this.dataset.index);
+                const selectedCustomer = customers[index];
+                fillQuoteCustomerFields(selectedCustomer);
+            });
+        });
+    }
+
+    function fillQuoteCustomerFields(customer) {
+        document.getElementById("clientName").value = customer.client_name || "";
+        document.getElementById("clientAddress").value = customer.client_address || "";
+        document.getElementById("clientCity").value = customer.client_city || "";
+        document.getElementById("quoteCustomerSearch").value = customer.client_name || "";
+    }
+
+    function filterQuoteCustomers(searchTerm) {
+        const term = searchTerm.trim().toLowerCase();
+
+        if (!term) {
+            filteredQuoteCustomers = [...allQuoteCustomers];
+        } else {
+            filteredQuoteCustomers = allQuoteCustomers.filter(customer =>
+                (customer.client_name || "").toLowerCase().includes(term) ||
+                (customer.client_address || "").toLowerCase().includes(term) ||
+                (customer.client_city || "").toLowerCase().includes(term)
+            );
+        }
+
+        renderQuoteCustomerList(filteredQuoteCustomers);
+    }
+
+    async function loadInvoiceCustomers() {
+        const invoiceCustomerList = document.getElementById("invoiceCustomerList");
+
+        try {
+            const response = await fetch(INVOICE_CUSTOMERS_API);
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch invoice customers");
+            }
+
+            allInvoiceCustomers = await response.json();
+            filteredInvoiceCustomers = [...allInvoiceCustomers];
+            renderInvoiceCustomerList(filteredInvoiceCustomers);
+        } catch (error) {
+            console.error("Error loading invoice customers:", error);
+            invoiceCustomerList.innerHTML = `
+                <div class="customer-empty">Failed to load previous customers.</div>
+            `;
+        }
+    }
+
+    function renderInvoiceCustomerList(customers) {
+        const invoiceCustomerList = document.getElementById("invoiceCustomerList");
+
+        if (!customers.length) {
+            invoiceCustomerList.innerHTML = `
+                <div class="customer-empty">No matching customers found.</div>
+            `;
+            return;
+        }
+
+        invoiceCustomerList.innerHTML = customers.map((customer, index) => `
+            <div class="customer-item" data-index="${index}">
+                <div class="customer-name">${escapeHtml(customer.client_name)}</div>
+                <div class="customer-meta">
+                    ${escapeHtml(customer.client_address)}
+                    ${customer.client_number ? " • " + escapeHtml(customer.client_number) : ""}
+                    ${customer.client_rate !== null && customer.client_rate !== undefined && customer.client_rate !== "" ? " • Tax Rate: " + escapeHtml(customer.client_rate) : ""}
+                </div>
+            </div>
+        `).join("");
+
+        document.querySelectorAll("#invoiceCustomerList .customer-item").forEach(item => {
+            item.addEventListener("click", function () {
+                const index = Number(this.dataset.index);
+                const selectedCustomer = customers[index];
+                fillInvoiceCustomerFields(selectedCustomer);
+            });
+        });
+    }
+
+    function fillInvoiceCustomerFields(customer) {
+        document.getElementById("clientName").value = customer.client_name || "";
+        document.getElementById("clientAddress").value = customer.client_address || "";
+        document.getElementById("clientNumber").value = customer.client_number || "";
+        document.getElementById("clientRate").value = customer.client_rate ?? "";
+        document.getElementById("invoiceCustomerSearch").value = customer.client_name || "";
+    }
+
+    function filterInvoiceCustomers(searchTerm) {
+        const term = searchTerm.trim().toLowerCase();
+
+        if (!term) {
+            filteredInvoiceCustomers = [...allInvoiceCustomers];
+        } else {
+            filteredInvoiceCustomers = allInvoiceCustomers.filter(customer =>
+                (customer.client_name || "").toLowerCase().includes(term) ||
+                (customer.client_address || "").toLowerCase().includes(term) ||
+                (customer.client_number || "").toLowerCase().includes(term) ||
+                String(customer.client_rate ?? "").toLowerCase().includes(term)
+            );
+        }
+
+        renderInvoiceCustomerList(filteredInvoiceCustomers);
+    }
+
+    function resetQuoteCustomerReuse() {
+        const usePreviousQuoteCustomer = document.getElementById("usePreviousQuoteCustomer");
+        const quoteCustomerPicker = document.getElementById("quoteCustomerPicker");
+        const quoteCustomerSearch = document.getElementById("quoteCustomerSearch");
+
+        if (usePreviousQuoteCustomer) {
+            usePreviousQuoteCustomer.checked = false;
+        }
+        if (quoteCustomerPicker) {
+            quoteCustomerPicker.classList.add("hidden");
+        }
+        if (quoteCustomerSearch) {
+            quoteCustomerSearch.value = "";
+        }
+    }
+
+    function resetInvoiceCustomerReuse() {
+        const usePreviousInvoiceCustomer = document.getElementById("usePreviousInvoiceCustomer");
+        const invoiceCustomerPicker = document.getElementById("invoiceCustomerPicker");
+        const invoiceCustomerSearch = document.getElementById("invoiceCustomerSearch");
+
+        if (usePreviousInvoiceCustomer) {
+            usePreviousInvoiceCustomer.checked = false;
+        }
+        if (invoiceCustomerPicker) {
+            invoiceCustomerPicker.classList.add("hidden");
+        }
+        if (invoiceCustomerSearch) {
+            invoiceCustomerSearch.value = "";
+        }
+    }
+
+    function setupQuoteCustomerReuse() {
+        const toggle = document.getElementById("usePreviousQuoteCustomer");
+        const picker = document.getElementById("quoteCustomerPicker");
+        const search = document.getElementById("quoteCustomerSearch");
+
+        if (!toggle || !picker || !search || toggle.dataset.bound === "true") return;
+
+        toggle.addEventListener("change", async function () {
+            if (this.checked) {
+                picker.classList.remove("hidden");
+
+                if (allQuoteCustomers.length === 0) {
+                    await loadQuoteCustomers();
+                } else {
+                    filteredQuoteCustomers = [...allQuoteCustomers];
+                    renderQuoteCustomerList(filteredQuoteCustomers);
+                }
+            } else {
+                picker.classList.add("hidden");
+                search.value = "";
+                filteredQuoteCustomers = [...allQuoteCustomers];
+                renderQuoteCustomerList(filteredQuoteCustomers);
+            }
+        });
+
+        search.addEventListener("input", function () {
+            filterQuoteCustomers(this.value);
+        });
+
+        toggle.dataset.bound = "true";
+    }
+
+    function setupInvoiceCustomerReuse() {
+        const toggle = document.getElementById("usePreviousInvoiceCustomer");
+        const picker = document.getElementById("invoiceCustomerPicker");
+        const search = document.getElementById("invoiceCustomerSearch");
+
+        if (!toggle || !picker || !search || toggle.dataset.bound === "true") return;
+
+        toggle.addEventListener("change", async function () {
+            if (this.checked) {
+                picker.classList.remove("hidden");
+
+                if (allInvoiceCustomers.length === 0) {
+                    await loadInvoiceCustomers();
+                } else {
+                    filteredInvoiceCustomers = [...allInvoiceCustomers];
+                    renderInvoiceCustomerList(filteredInvoiceCustomers);
+                }
+            } else {
+                picker.classList.add("hidden");
+                search.value = "";
+                filteredInvoiceCustomers = [...allInvoiceCustomers];
+                renderInvoiceCustomerList(filteredInvoiceCustomers);
+            }
+        });
+
+        search.addEventListener("input", function () {
+            filterInvoiceCustomers(this.value);
+        });
+
+        toggle.dataset.bound = "true";
+    }
+
+function navigate(mode, el) {
         document.querySelectorAll(".nav-link").forEach(n => n.classList.remove("active"));
         el.classList.add("active");
 
@@ -620,6 +1000,8 @@
 
         document.getElementById("quoteFields").style.display = mode === "quote" ? "block" : "none";
         document.getElementById("receiptFields").style.display = mode === "receipt" ? "block" : "none";
+        document.getElementById("quoteReuseSection").style.display = mode === "quote" ? "block" : "none";
+        document.getElementById("invoiceReuseSection").style.display = mode === "receipt" ? "block" : "none";
 
         document.getElementById("invoiceBtn").style.display = mode === "receipt" ? "inline-block" : "none";
         document.getElementById("previewQuoteBtn").style.display = mode === "quote" ? "inline-block" : "none";
@@ -648,6 +1030,9 @@
         document.getElementById("clientCity").value = "";
         document.getElementById("clientNumber").value = "";
         document.getElementById("clientRate").value = "";
+
+        resetQuoteCustomerReuse();
+        resetInvoiceCustomerReuse();
     }
 
     function buildItems() {
@@ -1028,6 +1413,8 @@
     }
 
     document.getElementById("pageTitle").innerText = MODES.receipt.title;
+    setupQuoteCustomerReuse();
+    setupInvoiceCustomerReuse();
     resetForm();
 </script>
 </body>
