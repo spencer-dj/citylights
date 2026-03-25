@@ -327,6 +327,45 @@
             border: 1px solid var(--border);
             border-radius: 12px;
             background: #fff;
+            width: 100%;
+        }
+        
+        #itemsTable{
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        #itemsTable th, #itemsTable td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: middle;
+        }
+        #itemsTable th:nth-child(1), #itemsTable td:nth-child(1) {
+            min-width: 260px;
+            width: 40%;
+        }
+        #itemsTable th:nth-child(2), #itemsTable td:nth-child(2) {
+            min-width: 120px;
+            width: 15%;
+        }
+        #itemsTable th:nth-child(3), #itemsTable td:nth-child(3) {
+            min-width: 140px;
+            width: 20%;
+        }
+        #itemsTable th:nth-child(4), #itemsTable td:nth-child(4) {
+            min-width: 140px;
+            width: 15%
+        }
+        #itemsTable input {
+            width: 100%;
+            min-width: 0;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+        #itemsTable button {
+            white-space: nowrap;
         }
 
         .badge {
