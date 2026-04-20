@@ -108,7 +108,7 @@ def generate_invoice_file(payload: dict, invoice_number: str) -> str:
         # I: Total Price
         ws.cell(row=row, column=9, value=line_total)
 
-    current_row = start_row + len(payload["items"])
+    current_row = start_row + len(payload["items"]) - 1
 
     grand_total_label = ws.cell(row=current_row + 1, column=8, value="Grand Total")
     grand_total_label.font = Font(bold=True)

@@ -23,7 +23,7 @@ QUOTE_PDF_FOLDER = "generated_quotes"
 INVOICE_PDF_FOLDER = "generated_invoices"
 
 
-#@router.get("/quote_db", response_model=List[QuoteOut])
+
 @router.get("/quote_db")
 def get_all_quotes(
     db: Session = Depends(get_db),
