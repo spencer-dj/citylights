@@ -3,535 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Lights | Quotes & Receipts</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --primary: #3960FA;
-            --primary-dark: #2747c7;
-            --secondary: #6c757d;
-            --danger: #dc3545;
-            --bg: #f4f6f8;
-            --card: #ffffff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --border: #e5e7eb;
-            --hover: #eef4ff;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-            --radius: 14px;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(180deg, #f7f9fc 0%, #eef3fb 100%);
-            color: var(--text);
-            min-height: 100vh;
-        }
-
-        .app {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            height: 72px;
-            background: var(--primary);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 28px;
-            box-shadow: 0 4px 18px rgba(57, 96, 250, 0.25);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-weight: 700;
-            font-size: 18px;
-            letter-spacing: 0.2px;
-        }
-
-        .logo {
-            width: 42px;
-            height: 42px;
-            background: #fff;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
-
-        .header-right {
-            font-size: 13px;
-            color: rgba(255,255,255,0.9);
-        }
-
-        .main {
-            display: flex;
-            flex: 1;
-            min-height: 0;
-        }
-
-        aside {
-            width: 250px;
-            background: rgba(255,255,255,0.95);
-            border-right: 1px solid var(--border);
-            padding: 24px 16px;
-            backdrop-filter: blur(8px);
-        }
-
-        .aside-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: var(--muted);
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-            padding: 0 10px;
-        }
-
-        .nav-link {
-            display: block;
-            padding: 13px 14px;
-            margin-bottom: 8px;
-            text-decoration: none;
-            color: var(--text);
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-        }
-
-        .nav-link:hover {
-            background: var(--hover);
-            color: var(--primary);
-            border-color: #dbe5ff;
-        }
-
-        .nav-link.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 8px 18px rgba(57, 96, 250, 0.22);
-        }
-
-        .content {
-            flex: 1;
-            padding: 28px;
-            overflow-y: auto;
-        }
-
-        .card,
-        #quotesView,
-        #historyView {
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(229, 231, 235, 0.9);
-        }
-
-        .card {
-            max-width: 1100px;
-            padding: 28px;
-        }
-
-        #quotesView,
-        #historyView {
-            padding: 28px;
-        }
-
-        h2 {
-            font-size: 24px;
-            margin-bottom: 8px;
-            color: #111827;
-        }
-
-        h3 {
-            margin-top: 24px;
-            margin-bottom: 12px;
-            font-size: 18px;
-            color: #111827;
-        }
-
-        .section-subtitle {
-            color: var(--muted);
-            margin-bottom: 22px;
-            font-size: 14px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(220px, 1fr));
-            gap: 18px 20px;
-        }
-
-        .field-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .full-width {
-            grid-column: 1 / -1;
-        }
-
-        label {
-            font-weight: 700;
-            margin-bottom: 7px;
-            font-size: 13px;
-            color: #374151;
-        }
-
-        input {
-            width: 100%;
-            padding: 11px 13px;
-            font-size: 14px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            background: #fff;
-            outline: none;
-            transition: 0.2s ease;
-        }
-
-        input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(57, 96, 250, 0.12);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 14px;
-            font-size: 14px;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        thead th {
-            background: #f3f6fb;
-            color: #374151;
-            font-weight: 700;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th, td {
-            padding: 12px 10px;
-            text-align: left;
-            border-bottom: 1px solid #eef0f3;
-            vertical-align: middle;
-        }
-
-        tbody tr:nth-child(even) {
-            background: #fafbfc;
-        }
-
-        tbody tr:hover {
-            background: #edf4ff;
-        }
-
-        #itemsTable input {
-            padding: 10px 12px;
-            font-size: 13px;
-        }
-
-        button {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 700;
-            transition: 0.2s ease;
-        }
-
-        button:hover {
-            transform: translateY(-1px);
-        }
-
-        .primary {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .secondary {
-            background: var(--secondary);
-            color: #fff;
-        }
-
-        .secondary:hover {
-            opacity: 0.92;
-        }
-
-        .danger {
-            background: var(--danger);
-            color: #fff;
-        }
-
-        .danger:hover {
-            opacity: 0.92;
-        }
-
-        .actions {
-            margin-top: 22px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .filters {
-            display: flex;
-            align-items: end;
-            gap: 12px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            padding: 14px;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            min-width: 170px;
-        }
-
-        .empty-state {
-            padding: 24px;
-            text-align: center;
-            color: var(--muted);
-            border: 1px dashed #cfd8e3;
-            border-radius: 12px;
-            background: #fbfcfe;
-            margin-top: 12px;
-        }
-
-        .table-wrap {
-            overflow-x: auto;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: #fff;
-            width: 100%;
-        }
-        
-        #itemsTable{
-            width: 100%;
-            min-width: 700px;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
-        #itemsTable th, #itemsTable td {
-            padding: 10px;
-            border-bottom: 1px solid var(--border);
-            text-align: left;
-            vertical-align: middle;
-        }
-        #itemsTable th:nth-child(1), #itemsTable td:nth-child(1) {
-            min-width: 260px;
-            width: 40%;
-        }
-        #itemsTable th:nth-child(2), #itemsTable td:nth-child(2) {
-            min-width: 120px;
-            width: 15%;
-        }
-        #itemsTable th:nth-child(3), #itemsTable td:nth-child(3) {
-            min-width: 140px;
-            width: 20%;
-        }
-        #itemsTable th:nth-child(4), #itemsTable td:nth-child(4) {
-            min-width: 140px;
-            width: 15%
-        }
-        #itemsTable input {
-            width: 100%;
-            min-width: 0;
-            padding: 10px 12px;
-            font-size: 14px;
-        }
-        #itemsTable button {
-            white-space: nowrap;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #eaf0ff;
-            color: var(--primary);
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        #pdfModal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.65);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 24px;
-        }
-
-        #pdfModal .modal-content {
-            background: #ffffff;
-            width: min(1100px, 100%);
-            height: 85vh;
-            border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
-        }
-
-        #pdfFrame {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .modal-close {
-            position: absolute;
-            right: 16px;
-            top: 16px;
-            z-index: 2;
-            background: var(--danger);
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-        }
-
-        
-
-        .reuse-customer-section {
-            margin-bottom: 20px;
-            padding: 14px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: #f8fafc;
-        }
-
-        .reuse-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-
-        .reuse-toggle input {
-            width: auto;
-            margin: 0;
-        }
-
-        .customer-picker.hidden {
-            display: none;
-        }
-
-        .customer-search-input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            font-size: 14px;
-        }
-
-        .customer-list {
-            max-height: 220px;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: #fff;
-        }
-
-        .customer-item {
-            padding: 12px;
-            border-bottom: 1px solid #eef0f3;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .customer-item:last-child {
-            border-bottom: none;
-        }
-
-        .customer-item:hover {
-            background: var(--hover);
-        }
-
-        .customer-name {
-            font-weight: 700;
-            margin-bottom: 4px;
-            color: #111827;
-        }
-
-        .customer-meta {
-            font-size: 13px;
-            color: var(--muted);
-        }
-
-        .customer-empty {
-            padding: 12px;
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        @media (max-width: 900px) {
-            .main {
-                flex-direction: column;
-            }
-
-            aside {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-                padding: 16px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .content {
-                padding: 16px;
-            }
-
-            .card,
-            #quotesView,
-            #historyView {
-                padding: 18px;
-            }
-
-            header {
-                padding: 0 16px;
-            }
-
-            .header-right {
-                display: none;
-            }
-        }
-    </style>
+    <title>City Lights | Quotes & Invoices</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
-
 <body>
 <div class="app">
     <header>
@@ -552,13 +26,11 @@
         </aside>
 
         <div class="content">
-
             <div id="formView" class="card">
                 <div class="badge">Document Generator</div>
                 <h2 id="pageTitle"></h2>
                 <p class="section-subtitle">Fill in the client details and items below to generate your document.</p>
 
-                
                 <div id="quoteReuseSection" class="reuse-customer-section" style="display:none;">
                     <label class="reuse-toggle">
                         <input type="checkbox" id="usePreviousQuoteCustomer">
@@ -589,7 +61,7 @@
                         <input
                             type="text"
                             id="invoiceCustomerSearch"
-                            placeholder="Search customer by name, address, number, or tax rate"
+                            placeholder="Search customer by name, address, or number"
                             class="customer-search-input"
                         >
 
@@ -610,7 +82,6 @@
                         <input id="clientAddress" placeholder="Enter client address">
                     </div>
 
-                    <!-- QUOTE ONLY -->
                     <div id="quoteFields" class="full-width" style="display:none;">
                         <div class="form-grid">
                             <div class="field-group">
@@ -620,7 +91,6 @@
                         </div>
                     </div>
 
-                    <!-- INVOICE ONLY -->
                     <div id="receiptFields" class="full-width">
                         <div class="form-grid">
                             <div class="field-group">
@@ -629,8 +99,8 @@
                             </div>
 
                             <div class="field-group">
-                                <label>Items Tax Rate</label>
-                                <input id="clientRate" placeholder="Enter tax rate">
+                                <label>Mark Up Rate(%)</label>
+                                <input id="clientRate" placeholder="Enter mark up rate">
                             </div>
                         </div>
                     </div>
@@ -652,14 +122,13 @@
                 </div>
 
                 <div class="actions">
-                    <button class="secondary" onclick="addRow()">Add Item</button>
-
+                    <button class="secondary" id="addItemBtn" onclick="addRow()">Add Item</button>
                     <button class="primary" id="invoiceBtn" onclick="submitInvoice()">Generate Invoice</button>
-
                     <button class="secondary" id="previewQuoteBtn" style="display:none;" onclick="previewQuote()">Preview Quote</button>
-
                     <button class="primary" id="saveQuoteBtn" style="display:none;" onclick="saveQuote()">Save & Download Quote</button>
                 </div>
+
+                <div id="requestStatus" class="status-box"></div>
             </div>
 
             <div id="quotesView" style="display:none;">
@@ -705,7 +174,9 @@
                                 <th>Client Name</th>
                                 <th>Address</th>
                                 <th>Date</th>
+                                <th>Total Amount</th>
                                 <th>Quote</th>
+                                <th>Convert</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -742,9 +213,12 @@
 <script>
     const QUOTE_PREVIEW_API = "/quote/preview";
     const QUOTE_SAVE_API = "/quote/finalize";
-    const INVOICE_API = "/receipt";
+    const INVOICE_API = "/invoice";
     const QUOTE_CUSTOMERS_API = "/customers/quotes";
     const INVOICE_CUSTOMERS_API = "/customers/invoices";
+    const QUOTE_HISTORY_API = "/quote_db";
+    const INVOICE_HISTORY_API = "/invoice_db";
+    const SEARCH_API = "/search";
 
     const MODES = {
         receipt: { title: "Create Invoice" },
@@ -754,11 +228,14 @@
     let currentMode = "receipt";
     let previewBlobUrl = null;
 
-    
     let allQuoteCustomers = [];
     let filteredQuoteCustomers = [];
     let allInvoiceCustomers = [];
     let filteredInvoiceCustomers = [];
+
+    let isPreviewingQuote = false;
+    let isSavingQuote = false;
+    let isSubmittingInvoice = false;
 
     function escapeHtml(value) {
         return String(value ?? "")
@@ -769,24 +246,82 @@
             .replace(/'/g, "&#039;");
     }
 
+    function setRequestStatus(message = "", type = "info") {
+        const el = document.getElementById("requestStatus");
+        if (!el) return;
+
+        if (!message) {
+            el.className = "status-box";
+            el.textContent = "";
+            return;
+        }
+
+        el.className = `status-box ${type}`;
+        el.textContent = message;
+    }
+
+    function setButtonLoading(button, loadingText, isLoading) {
+        if (!button) return;
+
+        if (isLoading) {
+            if (!button.dataset.originalText) {
+                button.dataset.originalText = button.innerText;
+            }
+            button.innerText = loadingText;
+            button.disabled = true;
+        } else {
+            button.innerText = button.dataset.originalText || button.innerText;
+            button.disabled = false;
+        }
+    }
+
+    function getQuotePdfPath(q) {
+        return q.cached_pdf_path || q.client_quote_pdf || "";
+    }
+
+    function getInvoicePdfPath(inv) {
+        return inv.final_pdf_path || inv.client_invoice_pdf || inv.invoice||"";
+    }
+
+    function getQuoteNumber(q) {
+        return q.client_quote_number || q.quote_number || "-";
+    }
+
+    function getInvoiceNumber(inv) {
+        return inv.invoice_number || inv.client_invoice_number || "-";
+    }
+
+    function getQuoteTotalAmount(q) {
+        const direct = Number(q.total_amount);
+        if (!Number.isNaN(direct) && direct > 0) return direct;
+
+        try {
+            const payload = typeof q.quote_data === "string" ? JSON.parse(q.quote_data) : q.quote_data;
+            const total = Number(payload?.total);
+            if (!Number.isNaN(total)) return total;
+        } catch (e) {}
+
+        return 0;
+    }
+
+    function formatMoney(amount) {
+        const value = Number(amount || 0);
+        return value.toFixed(2);
+    }
+
     async function loadQuoteCustomers() {
         const quoteCustomerList = document.getElementById("quoteCustomerList");
 
         try {
             const response = await fetch(QUOTE_CUSTOMERS_API);
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch quote customers");
-            }
+            if (!response.ok) throw new Error("Failed to fetch quote customers");
 
             allQuoteCustomers = await response.json();
             filteredQuoteCustomers = [...allQuoteCustomers];
             renderQuoteCustomerList(filteredQuoteCustomers);
         } catch (error) {
             console.error("Error loading quote customers:", error);
-            quoteCustomerList.innerHTML = `
-                <div class="customer-empty">Failed to load previous customers.</div>
-            `;
+            quoteCustomerList.innerHTML = `<div class="customer-empty">Failed to load previous customers.</div>`;
         }
     }
 
@@ -794,9 +329,7 @@
         const quoteCustomerList = document.getElementById("quoteCustomerList");
 
         if (!customers.length) {
-            quoteCustomerList.innerHTML = `
-                <div class="customer-empty">No matching customers found.</div>
-            `;
+            quoteCustomerList.innerHTML = `<div class="customer-empty">No matching customers found.</div>`;
             return;
         }
 
@@ -847,19 +380,14 @@
 
         try {
             const response = await fetch(INVOICE_CUSTOMERS_API);
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch invoice customers");
-            }
+            if (!response.ok) throw new Error("Failed to fetch invoice customers");
 
             allInvoiceCustomers = await response.json();
             filteredInvoiceCustomers = [...allInvoiceCustomers];
             renderInvoiceCustomerList(filteredInvoiceCustomers);
         } catch (error) {
             console.error("Error loading invoice customers:", error);
-            invoiceCustomerList.innerHTML = `
-                <div class="customer-empty">Failed to load previous customers.</div>
-            `;
+            invoiceCustomerList.innerHTML = `<div class="customer-empty">Failed to load previous customers.</div>`;
         }
     }
 
@@ -867,9 +395,7 @@
         const invoiceCustomerList = document.getElementById("invoiceCustomerList");
 
         if (!customers.length) {
-            invoiceCustomerList.innerHTML = `
-                <div class="customer-empty">No matching customers found.</div>
-            `;
+            invoiceCustomerList.innerHTML = `<div class="customer-empty">No matching customers found.</div>`;
             return;
         }
 
@@ -879,7 +405,6 @@
                 <div class="customer-meta">
                     ${escapeHtml(customer.client_address)}
                     ${customer.client_number ? " • " + escapeHtml(customer.client_number) : ""}
-                    ${customer.client_rate !== null && customer.client_rate !== undefined && customer.client_rate !== "" ? " • Tax Rate: " + escapeHtml(customer.client_rate) : ""}
                 </div>
             </div>
         `).join("");
@@ -910,8 +435,7 @@
             filteredInvoiceCustomers = allInvoiceCustomers.filter(customer =>
                 (customer.client_name || "").toLowerCase().includes(term) ||
                 (customer.client_address || "").toLowerCase().includes(term) ||
-                (customer.client_number || "").toLowerCase().includes(term) ||
-                String(customer.client_rate ?? "").toLowerCase().includes(term)
+                (customer.client_number || "").toLowerCase().includes(term)
             );
         }
 
@@ -923,15 +447,9 @@
         const quoteCustomerPicker = document.getElementById("quoteCustomerPicker");
         const quoteCustomerSearch = document.getElementById("quoteCustomerSearch");
 
-        if (usePreviousQuoteCustomer) {
-            usePreviousQuoteCustomer.checked = false;
-        }
-        if (quoteCustomerPicker) {
-            quoteCustomerPicker.classList.add("hidden");
-        }
-        if (quoteCustomerSearch) {
-            quoteCustomerSearch.value = "";
-        }
+        if (usePreviousQuoteCustomer) usePreviousQuoteCustomer.checked = false;
+        if (quoteCustomerPicker) quoteCustomerPicker.classList.add("hidden");
+        if (quoteCustomerSearch) quoteCustomerSearch.value = "";
     }
 
     function resetInvoiceCustomerReuse() {
@@ -939,15 +457,9 @@
         const invoiceCustomerPicker = document.getElementById("invoiceCustomerPicker");
         const invoiceCustomerSearch = document.getElementById("invoiceCustomerSearch");
 
-        if (usePreviousInvoiceCustomer) {
-            usePreviousInvoiceCustomer.checked = false;
-        }
-        if (invoiceCustomerPicker) {
-            invoiceCustomerPicker.classList.add("hidden");
-        }
-        if (invoiceCustomerSearch) {
-            invoiceCustomerSearch.value = "";
-        }
+        if (usePreviousInvoiceCustomer) usePreviousInvoiceCustomer.checked = false;
+        if (invoiceCustomerPicker) invoiceCustomerPicker.classList.add("hidden");
+        if (invoiceCustomerSearch) invoiceCustomerSearch.value = "";
     }
 
     function setupQuoteCustomerReuse() {
@@ -960,7 +472,6 @@
         toggle.addEventListener("change", async function () {
             if (this.checked) {
                 picker.classList.remove("hidden");
-
                 if (allQuoteCustomers.length === 0) {
                     await loadQuoteCustomers();
                 } else {
@@ -992,7 +503,6 @@
         toggle.addEventListener("change", async function () {
             if (this.checked) {
                 picker.classList.remove("hidden");
-
                 if (allInvoiceCustomers.length === 0) {
                     await loadInvoiceCustomers();
                 } else {
@@ -1014,13 +524,15 @@
         toggle.dataset.bound = "true";
     }
 
-function navigate(mode, el) {
+    function navigate(mode, el) {
         document.querySelectorAll(".nav-link").forEach(n => n.classList.remove("active"));
-        el.classList.add("active");
+        if (el) el.classList.add("active");
 
         document.getElementById("formView").style.display = "none";
         document.getElementById("quotesView").style.display = "none";
         document.getElementById("historyView").style.display = "none";
+
+        setRequestStatus();
 
         if (mode === "quotes") {
             document.getElementById("quotesView").style.display = "block";
@@ -1052,10 +564,10 @@ function navigate(mode, el) {
     function addRow(desc = "", qty = 1, price = 0) {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td><input value="${desc}" placeholder="Item description"></td>
+            <td><input value="${escapeHtml(desc)}" placeholder="Item description"></td>
             <td><input type="number" value="${qty}" min="1"></td>
             <td><input type="number" value="${price}" step="0.01" min="0"></td>
-            <td><button class="danger" onclick="this.closest('tr').remove()">Remove</button></td>
+            <td><button class="danger" type="button" onclick="this.closest('tr').remove()">Remove</button></td>
         `;
         document.querySelector("#itemsTable tbody").appendChild(tr);
     }
@@ -1103,12 +615,10 @@ function navigate(mode, el) {
                 alert("Each item must have a description.");
                 return false;
             }
-
             if (!item.quantity || item.quantity <= 0) {
                 alert("Each item must have a valid quantity.");
                 return false;
             }
-
             if (Number.isNaN(item.unit_price) || item.unit_price < 0) {
                 alert("Each item must have a valid unit price.");
                 return false;
@@ -1128,27 +638,19 @@ function navigate(mode, el) {
             alert("Client name is required.");
             return null;
         }
-
         if (!client_address) {
             alert("Client address is required.");
             return null;
         }
-
         if (!client_city) {
             alert("Client city is required.");
             return null;
         }
-
         if (!validateItems(items)) {
             return null;
         }
 
-        return {
-            client_name,
-            client_address,
-            client_city,
-            items
-        };
+        return { client_name, client_address, client_city, items };
     }
 
     function buildInvoicePayload() {
@@ -1162,22 +664,18 @@ function navigate(mode, el) {
             alert("Client name is required.");
             return null;
         }
-
         if (!client_address) {
             alert("Client address is required.");
             return null;
         }
-
         if (!client_number) {
             alert("Client number is required.");
             return null;
         }
-
-        if (!client_rate) {
+        if (client_rate === "") {
             alert("Items tax rate is required.");
             return null;
         }
-
         if (!validateItems(items)) {
             return null;
         }
@@ -1186,89 +684,213 @@ function navigate(mode, el) {
             client_name,
             client_address,
             client_number,
-            client_rate: Number(client_rate),
+            client_rate,
             items
         };
     }
 
     async function previewQuote() {
+        if (isPreviewingQuote || isSavingQuote || isSubmittingInvoice) return;
+
         const payload = buildQuotePayload();
         if (!payload) return;
+
+        const btn = document.getElementById("previewQuoteBtn");
+        isPreviewingQuote = true;
+        setButtonLoading(btn, "Preparing Preview...", true);
+        document.getElementById("saveQuoteBtn").disabled = true;
+        setRequestStatus("Generating quote preview. Please wait...", "info");
 
         try {
             const res = await fetch(QUOTE_PREVIEW_API, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
 
             if (!res.ok) {
                 const err = await res.text();
+                setRequestStatus("Failed to generate quote preview.", "error");
                 alert("Preview error: " + err);
                 return;
             }
 
             const blob = await res.blob();
             openPdfBlob(blob);
+            setRequestStatus("Quote preview loaded successfully.", "success");
         } catch (error) {
             console.error(error);
+            setRequestStatus("Preview request failed.", "error");
             alert("Preview request failed.");
+        } finally {
+            isPreviewingQuote = false;
+            setButtonLoading(btn, "Preparing Preview...", false);
+            if (!isSavingQuote && !isSubmittingInvoice) {
+                document.getElementById("saveQuoteBtn").disabled = false;
+            }
         }
     }
 
     async function saveQuote() {
+        if (isSavingQuote || isPreviewingQuote || isSubmittingInvoice) return;
+
         const payload = buildQuotePayload();
         if (!payload) return;
+
+        const btn = document.getElementById("saveQuoteBtn");
+        const previewBtn = document.getElementById("previewQuoteBtn");
+
+        isSavingQuote = true;
+        setButtonLoading(btn, "Processing Quote...", true);
+        if (previewBtn) previewBtn.disabled = true;
+        document.getElementById("addItemBtn").disabled = true;
+        setRequestStatus("Saving quote and preparing download. Please wait...", "info");
 
         try {
             const res = await fetch(QUOTE_SAVE_API, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
 
             if (!res.ok) {
                 const err = await res.text();
+                setRequestStatus("Failed to save quote.", "error");
                 alert("Save error: " + err);
                 return;
             }
 
             const blob = await res.blob();
             downloadBlob(blob, "quote.pdf");
+            setRequestStatus("Quote saved successfully. Download should start automatically.", "success");
         } catch (error) {
             console.error(error);
+            setRequestStatus("Save and download failed.", "error");
             alert("Save and download failed.");
+        } finally {
+            isSavingQuote = false;
+            setButtonLoading(btn, "Processing Quote...", false);
+            if (previewBtn) previewBtn.disabled = false;
+            document.getElementById("addItemBtn").disabled = false;
         }
     }
 
     async function submitInvoice() {
+        if (isSubmittingInvoice || isSavingQuote || isPreviewingQuote) return;
+
         const payload = buildInvoicePayload();
         if (!payload) return;
+
+        const btn = document.getElementById("invoiceBtn");
+        isSubmittingInvoice = true;
+        setButtonLoading(btn, "Generating Invoice...", true);
+        document.getElementById("addItemBtn").disabled = true;
+        setRequestStatus("Generating invoice and preparing download. Please wait...", "info");
 
         try {
             const res = await fetch(INVOICE_API, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
 
             if (!res.ok) {
                 const err = await res.text();
+                setRequestStatus("Failed to generate invoice.", "error");
                 alert("Invoice error: " + err);
                 return;
             }
 
             const blob = await res.blob();
-            downloadBlob(blob, "invoice.xlsx");
+            downloadBlob(blob, "invoice.pdf");
+            setRequestStatus("Invoice generated successfully. Download should start automatically.", "success");
         } catch (error) {
             console.error(error);
+            setRequestStatus("Invoice request failed.", "error");
             alert("Invoice request failed.");
+        } finally {
+            isSubmittingInvoice = false;
+            setButtonLoading(btn, "Generating Invoice...", false);
+            document.getElementById("addItemBtn").disabled = false;
+        }
+    }
+
+    async function convertQuoteToInvoice(quoteId, quoteTotal, quoteNumber) {
+        const total = Number(quoteTotal);
+
+        if (!quoteId) {
+            alert("Quote ID is missing.");
+            return;
+        }
+
+        if (!total || total <= 0) {
+            alert("This quote does not have a valid total amount.");
+            return;
+        }
+
+        const minAmount = total * 0.60;
+        const amountText = prompt(
+            `Enter amount paid for quote ${quoteNumber}.\nMinimum allowed: ${formatMoney(minAmount)}\nMaximum allowed: ${formatMoney(total)}`
+        );
+
+        if (amountText === null) return;
+
+        const amountPaid = Number(amountText);
+
+        if (Number.isNaN(amountPaid)) {
+            alert("Please enter a valid amount.");
+            return;
+        }
+
+        if (amountPaid > total) {
+            alert("Amount paid cannot exceed the quote amount.");
+            return;
+        }
+
+        if (amountPaid < minAmount) {
+            alert(`Amount paid cannot be less than 60% of the quote amount.\nMinimum required: ${formatMoney(minAmount)}`);
+            return;
+        }
+
+        const confirmed = confirm(
+            `Are you sure you want to convert quote ${quoteNumber} to an invoice?\n\nQuote Total: ${formatMoney(total)}\nAmount Paid: ${formatMoney(amountPaid)}`
+        );
+
+        if (!confirmed) return;
+
+        try {
+            setRequestStatus("Converting quote to invoice. Please wait...", "info");
+
+            const res = await fetch(`/quotes/${quoteId}/convert-to-invoice`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount_paid: amountPaid })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || data["failed to convert quote"]) {
+                alert(data["failed to convert quote"] || "Failed to convert quote.");
+                setRequestStatus("Failed to convert quote to invoice.", "error");
+                return;
+            }
+
+            const filePath = data.final_pdf_path;
+            if (!filePath) {
+                alert("Invoice was created, but no PDF path was returned.");
+                setRequestStatus("Invoice created, but preview path is missing.", "error");
+                fetchHistory();
+                return;
+            }
+
+            const fileName = filePath.split("/").pop();
+            previewPdf(`/pdf/invoice/${encodeURIComponent(fileName)}`);
+            setRequestStatus("Quote converted successfully. New invoice is ready.", "success");
+            fetchHistory();
+        } catch (error) {
+            console.error(error);
+            alert("Conversion request failed.");
+            setRequestStatus("Conversion request failed.", "error");
         }
     }
 
@@ -1280,7 +902,8 @@ function navigate(mode, el) {
         document.body.appendChild(a);
         a.click();
         a.remove();
-        URL.revokeObjectURL(url);
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
 
     function openPdfBlob(blob) {
@@ -1326,8 +949,8 @@ function navigate(mode, el) {
         const start = document.getElementById("startDate").value;
         const end = document.getElementById("endDate").value;
 
-        let quoteUrl = "/quote_db";
-        let invoiceUrl = "/invoice_db";
+        let quoteUrl = QUOTE_HISTORY_API;
+        let invoiceUrl = INVOICE_HISTORY_API;
 
         if (start && end) {
             quoteUrl += `?start_date=${start}&end_date=${end}`;
@@ -1363,27 +986,37 @@ function navigate(mode, el) {
         if (!quotes || quotes.length === 0) {
             quotesBody.innerHTML = `
                 <tr>
-                    <td colspan="5" style="text-align:center; color:#6b7280;">No quotes found</td>
+                    <td colspan="7" class="table-empty">No quotes found</td>
                 </tr>
             `;
             return;
         }
 
         quotes.forEach(q => {
-            const quoteNumberValue = q.client_quote_number || "-";
-            const pdfPath = q.client_quote_pdf || "";
+            const quoteNumberValue = getQuoteNumber(q);
+            const pdfPath = getQuotePdfPath(q);
+            const totalAmount = getQuoteTotalAmount(q);
+            const canConvert = (q.status || "").toLowerCase() !== "converted";
 
             quotesBody.innerHTML += `
                 <tr>
-                    <td>${quoteNumberValue}</td>
-                    <td>${q.client_name || "-"}</td>
-                    <td>${q.client_address || "-"}</td>
+                    <td>${escapeHtml(quoteNumberValue)}</td>
+                    <td>${escapeHtml(q.client_name || "-")}</td>
+                    <td>${escapeHtml(q.client_address || "-")}</td>
                     <td>${q.client_date ? new Date(q.client_date).toLocaleDateString() : "-"}</td>
+                    <td>${formatMoney(totalAmount)}</td>
                     <td>
                         ${
                             pdfPath
-                                ? `<button class="secondary" onclick="previewPdf('/pdf/quote/${pdfPath.split('/').pop()}')">Preview</button>`
-                                : `<span style="color:#6b7280;">No PDF</span>`
+                                ? `<button class="secondary" onclick="previewPdf('/pdf/quote/${encodeURIComponent(pdfPath.split('/').pop())}')">Preview</button>`
+                                : `<span class="muted-text">No PDF</span>`
+                        }
+                    </td>
+                    <td>
+                        ${
+                            canConvert
+                                ? `<button class="primary" onclick="convertQuoteToInvoice(${q.id}, ${totalAmount}, '${escapeHtml(quoteNumberValue)}')">Convert to Invoice</button>`
+                                : `<span class="converted-label">Converted</span>`
                         }
                     </td>
                 </tr>
@@ -1398,27 +1031,27 @@ function navigate(mode, el) {
         if (!invoices || invoices.length === 0) {
             invoicesBody.innerHTML = `
                 <tr>
-                    <td colspan="5" style="text-align:center; color:#6b7280;">No invoices found</td>
+                    <td colspan="5" class="table-empty">No invoices found</td>
                 </tr>
             `;
             return;
         }
 
         invoices.forEach(inv => {
-            const invoiceNumberValue = inv.client_number || "-";
-            const pdfPath = inv.client_invoice_pdf || "";
+            const invoiceNumberValue = getInvoiceNumber(inv);
+            const pdfPath = getInvoicePdfPath(inv);
 
             invoicesBody.innerHTML += `
                 <tr>
-                    <td>${invoiceNumberValue}</td>
-                    <td>${inv.client_name || "-"}</td>
-                    <td>${inv.client_address || "-"}</td>
+                    <td>${escapeHtml(invoiceNumberValue)}</td>
+                    <td>${escapeHtml(inv.client_name || "-")}</td>
+                    <td>${escapeHtml(inv.client_address || "-")}</td>
                     <td>${inv.client_date ? new Date(inv.client_date).toLocaleDateString() : "-"}</td>
                     <td>
                         ${
                             pdfPath
-                                ? `<button class="secondary" onclick="previewPdf('/pdf/invoice/${pdfPath.split('/').pop()}')">Preview</button>`
-                                : `<span style="color:#6b7280;">No PDF</span>`
+                                ? `<button class="secondary" onclick="previewPdf('/pdf/invoice/${encodeURIComponent(pdfPath.split('/').pop())}')">Preview</button>`
+                                : `<span class="muted-text">No PDF</span>`
                         }
                     </td>
                 </tr>
@@ -1435,7 +1068,7 @@ function navigate(mode, el) {
         }
 
         try {
-            const res = await fetch(`/search?search=${encodeURIComponent(query)}`);
+            const res = await fetch(`${SEARCH_API}?search=${encodeURIComponent(query)}`);
 
             if (!res.ok) {
                 alert("Search error");
@@ -1451,10 +1084,13 @@ function navigate(mode, el) {
         }
     }
 
-    document.getElementById("pageTitle").innerText = MODES.receipt.title;
-    setupQuoteCustomerReuse();
-    setupInvoiceCustomerReuse();
-    resetForm();
+    document.addEventListener("DOMContentLoaded", () => {
+        setupQuoteCustomerReuse();
+        setupInvoiceCustomerReuse();
+
+        const activeNav = document.querySelector(".nav-link.active");
+        navigate("receipt", activeNav);
+    });
 </script>
 </body>
 </html>

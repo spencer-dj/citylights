@@ -1,16 +1,17 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
-from app.services.quote import router as qoute_router
-from app.services.invoice import router as invoice_router
 from app.database import engine, Base
 from app.routes.routes import router as routes_router
 from app.services.search import router as search_router
 from app.routes import customers
+from fastapi.staticfiles import StaticFiles
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
 def home():
@@ -23,10 +24,6 @@ app.add_middleware(
     allow_methods=["*"],          
     allow_headers=["*"],
 )
-app.include_router(qoute_router)
-app.include_router(invoice_router)
 app.include_router(routes_router)
 app.include_router(search_router)
-#app.include_router(quotes.router)
-#app.include_router(invoices.router)
 app.include_router(customers.router)
